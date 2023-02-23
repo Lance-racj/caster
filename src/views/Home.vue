@@ -1,24 +1,95 @@
 <template>
   <el-container>
-    <el-header>Header</el-header>
+    <el-header>
+      <h2>校园信息共享后台管理系统</h2>
+      <div class="info">
+        <p>{{ role }} {{ nickName }}</p>
+        <el-button @click="logOut">退出</el-button>
+      </div>
+    </el-header>
     <el-container>
-      <el-aside width="200px">Aside</el-aside>
-      <el-main>Main</el-main>
+      <el-aside width="200px">
+        <el-menu
+          :default-active="currentPath"
+          class="el-menu-vertical-demo"
+          @select="handleSelect"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b">
+          <el-menu-item index="/findgoods">
+            <i class="el-icon-location"></i>
+            <span slot="title">寻物管理</span>
+          </el-menu-item>
+          <el-menu-item index="/findperson">
+            <i class="el-icon-menu"></i>
+            <span slot="title">寻主管理</span>
+          </el-menu-item>
+          <el-menu-item index="/user">
+            <i class="el-icon-document"></i>
+            <span slot="title">用户管理</span>
+          </el-menu-item>
+          <el-menu-item index="/admin">
+            <i class="el-icon-setting"></i>
+            <span slot="title">管理员管理</span>
+          </el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
 export default {
-
+  data() {
+    return {
+      role: '',
+      nickName: '',
+      currentPath: '/admin'
+    }
+  },
+  created() {
+    const userInfo = localStorage.getItem('userInfo');
+    if (userInfo) {
+      const { role, nickName } = JSON.parse(userInfo);
+      this.role = role === 0? '超级管理员': '管理员';
+      this.nickName = nickName;
+    } else { // 缓存中没有说明没登录，返回登录
+      this.$router.push('/login')
+    }
+  },
+  methods: {
+    logOut() {
+      localStorage.removeItem('userInfo');
+      this.$router.push('/login');
+    },
+    handleSelect(path) {
+      if (path !== this.currentPath) {
+        this.$router.push(path);
+        this.currentPath = path;
+      }
+    }
+  }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
   .el-header {
     background-color: #B3C0D1;
     color: #333;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .info {
+      display: flex;
+      align-items: center;
+      .el-button {
+        margin-left: 20px;
+      }
+    }
   }
   
   .el-aside {
@@ -26,6 +97,9 @@ export default {
     color: #333;
     text-align: center;
     height: calc(100vh - 60px);
+    .el-menu-vertical-demo {
+      height: calc(100vh - 60px);
+    }
   }
   
   .el-main {
