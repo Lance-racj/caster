@@ -39,6 +39,7 @@ export default {
         this.$router.push('/home');
       } else {
         this.$message.error(`登录失败，请校验用户名及密码`);
+        console.log(`errrrr`);
       }
     }
   }
