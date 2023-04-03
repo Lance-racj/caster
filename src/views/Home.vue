@@ -1,14 +1,14 @@
 <template>
   <el-container>
     <el-header>
-      <h2>校园信息共享后台管理系统</h2>
+      <h2>校园信息共享后台</h2>
       <div class="info">
         <p>{{ role }} {{ nickName }}</p>
         <el-button @click="logOut">退出</el-button>
       </div>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside width="220px">
         <el-menu
           :default-active="currentPath"
           class="el-menu-vertical-demo"
@@ -60,6 +60,10 @@ export default {
       this.$router.push('/login')
     }
   },
+  // 保证每次进入页面都是admin界面
+  mounted() {
+    this.$router.push(this.currentPath);
+  },
   methods: {
     logOut() {
       localStorage.removeItem('userInfo');
@@ -77,7 +81,7 @@ export default {
 
 <style lang="less" scoped>
   .el-header {
-    background-color: #B3C0D1;
+    background-color: #009688;
     color: #333;
     text-align: center;
     display: flex;

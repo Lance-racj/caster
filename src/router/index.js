@@ -49,4 +49,10 @@ const router = new VueRouter({
   routes
 })
 
+// 解决路由重复问题
+const VueRouterPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (to) {
+  return VueRouterPush.call(this, to).catch(err => err)
+}
+
 export default router
