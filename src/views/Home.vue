@@ -4,7 +4,7 @@
       <h2>校园信息共享后台</h2>
       <div class="info">
         <p>{{ role }} {{ nickName }}</p>
-        <el-button @click="logOut">退出</el-button>
+        <el-button type="primary" size="small" @click="logOut">退出</el-button>
       </div>
     </el-header>
     <el-container>
@@ -15,7 +15,7 @@
           @select="handleSelect"
           background-color="#545c64"
           text-color="#fff"
-          active-text-color="#ffd04b">
+          active-text-color="#409EFF">
           <el-menu-item index="/findgoods">
             <i class="el-icon-location"></i>
             <span slot="title">寻物管理</span>

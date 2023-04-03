@@ -5,13 +5,21 @@
       <el-table-column prop="openid" label="openID"></el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
       <el-table-column prop="password" label="密码"></el-table-column>
+      <el-table-column prop="time" label="创建时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-popconfirm
             title="是否删掉这条数据？不可恢复"
             @confirm="deleteItem(scope.row._id)"
           >
-            <el-button slot="reference">删除</el-button>
+            <el-button 
+              type="danger" 
+              size="small" 
+              slot="reference" 
+              icon="el-icon-delete"
+            >
+              删除
+            </el-button>
           </el-popconfirm>
         </template>
       </el-table-column>
@@ -31,6 +39,8 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
+
 export default {
   data() {
     return {
@@ -52,17 +62,33 @@ export default {
       const {
         data: {result, total},
       } = await this.$http.post('/admin/getUser', params);
-      console.log('uuu', result);
-      console.log('uuu', total);
+      this.tableData = result.map((item) => {
+        return {
+          ...item,
+          time: dayjs(item.time).format("YYYY-MM-DD HH:mm:ss")
+        }
+      })
+      this.total = total;
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.size = val;
+      this.getUserData();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.page = val;
+      this.getUserData();
     },
-    deleteItem() {
-      
+    async deleteItem(_id) {
+      const params = {
+        _id
+      };
+      const { data } = await this.$http.post('/admin/deleteUser', params);
+      if (data === 'success') {
+        this.$message.success(`删除成功`);
+        this.getUserData();
+      } else {
+        this.$message.error(`删除失败`);
+      }
     }
   }
 }
