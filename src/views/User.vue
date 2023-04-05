@@ -1,6 +1,15 @@
 <template>
   <div class="user_container">
-    <h2>用户管理</h2>
+    <div class="user_container_toolBar">
+      <h2>用户管理</h2>
+      <el-input
+        placeholder="请输入用户名"
+        prefix-icon="el-icon-search"
+        v-model="keyWord"
+        @change="searchByUserName"
+      >
+      </el-input>
+    </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="openid" label="openID"></el-table-column>
       <el-table-column prop="username" label="用户名"></el-table-column>
@@ -30,7 +39,7 @@
       @current-change="handleCurrentChange"
       :current-page="page"
       :page-sizes="[5, 10, 15, 20]"
-      :page-size="100"
+      :page-size="size"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     >
@@ -46,8 +55,9 @@ export default {
     return {
       tableData: [],
       page: 1,
-      size: 5,
+      size: 10,
       total: 0,
+      keyWord: ''
     };
   },
   created() {
@@ -57,7 +67,8 @@ export default {
     getUserData: async function() {
       const params = {
         page: this.page,
-        size: this.size
+        size: this.size,
+        keyWord: this.keyWord
       };
       const {
         data: {result, total},
@@ -65,7 +76,7 @@ export default {
       this.tableData = result.map((item) => {
         return {
           ...item,
-          time: dayjs(item.time).format("YYYY-MM-DD HH:mm:ss")
+          time: dayjs(item.date).format("YYYY-MM-DD HH:mm:ss")
         }
       })
       this.total = total;
@@ -76,6 +87,9 @@ export default {
     },
     handleCurrentChange(val) {
       this.page = val;
+      this.getUserData();
+    },
+    searchByUserName() {
       this.getUserData();
     },
     async deleteItem(_id) {
@@ -101,9 +115,19 @@ export default {
     border-radius: 20px;
     box-sizing: border-box;
     width: 100%;
-    h2 {
-      text-align: left;
+    &_toolBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 20px;
+      h2 {
+        text-align: left;
+      }
+      .el-input {
+        width: 300px;
+        display: flex;
+        align-items: center;
+      }
     }
     .user_pagination {
       margin-top: 20px;
