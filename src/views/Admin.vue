@@ -1,17 +1,22 @@
 <template>
   <div>
+    <!-- 有权限访问 -->
     <div v-if="role === 0" class="admin_container">
+      <!-- 头部区域 -->
       <div class="admin_container_toolBar">
         <el-button 
           v-if="role === 0" 
           icon="el-icon-plus"
           class="admin_container_newAdminBtn" 
           type="primary"
-          @click="dialogFormVisible = true"
+          @click="() => {
+            this.form.create_time = new Date().getTime()
+            dialogFormVisible = true
+          }"
         >
           新建管理员
         </el-button>
-        <el-dialog title="收货地址" :visible.sync="dialogFormVisible" width="40%" modal>
+        <el-dialog title="新增管理员信息" :visible.sync="dialogFormVisible" width="40%" modal @close="clearInfo">
           <el-form :model="form">
             <el-form-item label="管理员用户名" :label-width="formLabelWidth">
               <el-input v-model="form.username" autocomplete="off"></el-input>
@@ -46,6 +51,7 @@
         >
         </el-input>
       </div>
+      <!-- 表单部分 -->
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="username" label="用户名"></el-table-column>
         <el-table-column prop="password" label="密码"></el-table-column>
@@ -63,6 +69,7 @@
                 size="small" 
                 slot="reference" 
                 icon="el-icon-delete"
+                style="margin-left: 10px"
                 :disabled="scope.row.role === `超级管理员`"
               >
                 删除
@@ -74,7 +81,8 @@
               slot="reference" 
               icon="el-icon-edit"
               :disabled="scope.row.role === `超级管理员`"
-              style="margin-left: 15px"
+              style="margin-left: 10px"
+              @click="editItem(scope.row)"
             >
               编辑
             </el-button>
@@ -93,6 +101,7 @@
       >
       </el-pagination>
     </div>
+    <!-- 无权限访问 -->
     <div v-else>
       您没有权限访问该页面
     </div>
@@ -115,9 +124,10 @@ export default {
       form: {
         username: '',
         password: '',
-        role: undefined,
-        create_time: new Date().getTime(),
-        nickname: ''
+        role: '',
+        create_time: '',
+        nickname: '',
+        _id: ''
       },
       formLabelWidth: '120px'
     };
@@ -131,6 +141,7 @@ export default {
     }
   },
   methods: {
+    // 获取管理员用户信息
     getAdminData: async function() {
       const params = {
         page: this.page,
@@ -149,18 +160,22 @@ export default {
       })
       this.total = total;
     },
+    // 更改每页显示的size大小
     handleSizeChange(val) {
       this.size = val;
       this.getAdminData();
     },
+    // 换页
     handleCurrentChange(val) {
       this.page = val;
       this.getAdminData();
     },
+    // 根据管理员用户名搜索
     searchByUserName() {
       this.getAdminData();
     },
-    async deleteItem(_id) {
+    // 删除管理员信息
+    deleteItem: async function(_id) {
       const params = {
         _id,
         username: JSON.parse(localStorage.getItem('userInfo')).username
@@ -173,27 +188,51 @@ export default {
         this.$message.error(`删除失败`);
       }
     },
+    // 新增管理员信息
     handleAddAdmin: async function() {
-      const {username, password, nickname, create_time, role} = this.form;
+      const {username, password, nickname, create_time, role, _id} = this.form;
       const params = {
         username,
         password,
         nickname,
         create_time,
-        role
+        role: Number(role),
+        _id
       };
       const res = await this.$http.post('/admin/addAdmin', params);
       if (res.data === 'success') {
-        this.$message.success('创建成功');
-        this.form.username = '';
-        this.form.password = '';
-        this.form.role = undefined;
-        this.form.nickname = '';
+        this.$message.success(_id? '编辑成功': '创建成功');
+        this.clearInfo();
       } else {
-        this.$message.error('创建失败');
+        this.$message.error(_id? '编辑失败': '创建失败');
       }
       this.dialogFormVisible = false;
       this.getAdminData();
+    },
+    // 编辑管理员信息
+    editItem: async function(item) {
+      const {
+        username,
+        password,
+        createTime,
+        nickName,
+        role,
+        _id
+      } = item;
+      this.form.username = username;
+      this.form.password = password;
+      this.form.role = role === '超级管理员'? '0': '1';
+      this.form.nickname = nickName;
+      this.form._id = _id;
+      this.form.create_time = createTime;
+      this.dialogFormVisible = true;
+    },
+    clearInfo() {
+      this.form.username = '';
+      this.form.password = '';
+      this.form.role = '';
+      this.form.nickname = '';
+      this.form._id = '';
     }
   }
 }
