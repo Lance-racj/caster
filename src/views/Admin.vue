@@ -58,7 +58,7 @@
         <el-table-column prop="time" label="创建时间"></el-table-column>
         <el-table-column prop="role" label="管理员级别"></el-table-column>
         <el-table-column prop="nickName" label="花名"></el-table-column>
-        <el-table-column label="操作">
+        <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-popconfirm
               title="是否删掉这条数据？不可恢复"

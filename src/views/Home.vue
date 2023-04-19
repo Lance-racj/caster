@@ -16,8 +16,7 @@
           :default-active="currentPath"
           class="el-menu-vertical-demo"
           @select="handleSelect"
-          background-color="#ffffff"
-          text-color="#000"
+          text-color="#000000"
           active-text-color="#1677ff"
         >
           <el-menu-item index="/findgoods">
@@ -96,6 +95,13 @@ export default {
       img {
         height: 34px;
         margin-right: 10px;
+      }
+      img:hover {
+        transform: rotate(666turn);
+        transition-delay: 1s;
+        transition-property: all;
+        transition-duration: 59s;
+        transition-timing-function: cubic-bezier(.34,0,.84,1)
       }
       h2 {
         font-size: 18px;
