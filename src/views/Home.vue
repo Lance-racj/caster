@@ -1,10 +1,13 @@
 <template>
   <el-container>
     <el-header>
-      <h2>校园信息共享后台</h2>
+      <div class="title">
+        <img src="https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg" alt="logo">
+        <h2>校园信息共享后台</h2>
+      </div>
       <div class="info">
         <p>{{ role }} {{ nickName }}</p>
-        <el-button type="primary" size="small" @click="logOut">退出</el-button>
+        <el-button type="danger" size="small" @click="logOut" icon="el-icon-switch-button">退出</el-button>
       </div>
     </el-header>
     <el-container>
@@ -13,9 +16,10 @@
           :default-active="currentPath"
           class="el-menu-vertical-demo"
           @select="handleSelect"
-          background-color="#545c64"
-          text-color="#fff"
-          active-text-color="#409EFF">
+          background-color="#ffffff"
+          text-color="#000"
+          active-text-color="#1677ff"
+        >
           <el-menu-item index="/findgoods">
             <i class="el-icon-location"></i>
             <span slot="title">寻物管理</span>
@@ -79,14 +83,25 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   .el-header {
-    background-color: #009688;
-    color: #333;
+    background-color: #001529;
+    color: #ffffff;
     text-align: center;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    .title {
+      display: flex;
+      img {
+        height: 34px;
+        margin-right: 10px;
+      }
+      h2 {
+        font-size: 18px;
+        line-height: 34px;
+      }    
+    }
     .info {
       display: flex;
       align-items: center;
@@ -101,6 +116,22 @@ export default {
     color: #333;
     text-align: center;
     height: calc(100vh - 60px);
+    .el-menu {
+      .is-active {
+        background-color: #e6f7ff !important;
+      }
+      .is-active::after {
+        content: '';
+        width: 0;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        display: block;
+        border-right: 3px solid #1890ff;
+      }
+    }
     .el-menu-vertical-demo {
       height: calc(100vh - 60px);
     }
