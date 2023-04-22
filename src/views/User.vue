@@ -11,11 +11,11 @@
       </el-input>
     </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="openid" label="openID"></el-table-column>
-      <el-table-column prop="username" label="用户名"></el-table-column>
-      <el-table-column prop="password" label="密码"></el-table-column>
-      <el-table-column prop="time" label="创建时间"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column prop="openid" label="openID" align="center"></el-table-column>
+      <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+      <el-table-column prop="password" label="密码" align="center"></el-table-column>
+      <el-table-column prop="time" label="创建时间" align="center"></el-table-column>
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-popconfirm
             title="是否删掉这条数据？不可恢复"

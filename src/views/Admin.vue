@@ -53,11 +53,11 @@
       </div>
       <!-- 表单部分 -->
       <el-table :data="tableData" border style="width: 100%">
-        <el-table-column prop="username" label="用户名"></el-table-column>
-        <el-table-column prop="password" label="密码"></el-table-column>
-        <el-table-column prop="time" label="创建时间"></el-table-column>
-        <el-table-column prop="role" label="管理员级别"></el-table-column>
-        <el-table-column prop="nickName" label="花名"></el-table-column>
+        <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+        <el-table-column prop="password" label="密码" align="center"></el-table-column>
+        <el-table-column prop="time" label="创建时间" align="center"></el-table-column>
+        <el-table-column prop="role" label="管理员级别" align="center"></el-table-column>
+        <el-table-column prop="nickName" label="花名" align="center"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
             <el-popconfirm

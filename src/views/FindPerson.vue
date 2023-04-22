@@ -1,20 +1,30 @@
 <template>
   <div class="fp_container">
+    <div class="fp_container_toolBar">
+      <h2>寻主管理</h2>
+      <el-input
+        placeholder="请输入物品名称"
+        prefix-icon="el-icon-search"
+        v-model="keyWord"
+        @change="searchByThingName"
+      >
+      </el-input>
+    </div>
     <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="openid" label="openID"> </el-table-column>
-      <el-table-column prop="classify_1" label="一级分类"> </el-table-column>
-      <el-table-column prop="classify_2" label="二级分类"> </el-table-column>
-      <el-table-column prop="name" label="名称"> </el-table-column>
-      <el-table-column prop="date" label="丢失时间"> </el-table-column>
-      <el-table-column prop="region" label="丢失地点"> </el-table-column>
-      <el-table-column prop="phone" label="联系方式"> </el-table-column>
-      <el-table-column prop="desc" label="描述"> </el-table-column>
+      <el-table-column prop="openid" label="openID" align="center"> </el-table-column>
+      <el-table-column prop="classify_1" label="一级分类" align="center"> </el-table-column>
+      <el-table-column prop="classify_2" label="二级分类" align="center"> </el-table-column>
+      <el-table-column prop="name" label="物品名称" align="center"> </el-table-column>
+      <el-table-column prop="date" label="拾取时间" align="center"> </el-table-column>
+      <el-table-column prop="region" label="拾取地点" align="center"> </el-table-column>
+      <el-table-column prop="phone" label="联系方式" align="center"> </el-table-column>
+      <el-table-column prop="desc" label="物品描述" align="center"> </el-table-column>
       <el-table-column label="相关图片">
         <template slot-scope="scope">
           <el-image 
             style="width: 100px; height: 100px"
-            :src="scope.row.imgList[0]" 
-            :preview-src-list="scope.row.imgList">
+            :src="scope.row.imgList[0].url" 
+            :preview-src-list="scope.row.imgList.map(item => item.url)">
           </el-image>
         </template>
       </el-table-column>
@@ -26,7 +36,7 @@
       @current-change="handleCurrentChange"
       :current-page="page"
       :page-sizes="[5, 10, 15, 20]"
-      :page-size="100"
+      :page-size="size"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     >
@@ -35,31 +45,53 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
+
 export default {
   data() {
     return {
       tableData: [],
       page: 1,
-      size: 5,
+      size: 10,
       total: 0,
+      keyWord: ''
     };
   },
   async created() {
-    const params = {
-      type: 0,
-      page: this.page,
-      size: this.size
-    }
-    // const pageData = await this.$http.post('/admin/getLose', params);
-    // console.log('xxx', pageData);
+    this.getFindPersonData();
   },
   methods: {
+    getFindPersonData: async function() {
+      const params = {
+        type: 0,
+        page: this.page,
+        size: this.size
+      }
+      const {
+        data: {result, total},
+      } = await this.$http.post('/admin/getLose', params);
+      this.tableData = result.map((item) => {
+        return {
+          ...item,
+          time: dayjs(item.time).format("YYYY-MM-DD HH:mm:ss")
+        }
+      })
+      this.total = total;
+    },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.size = val;
+      this.getFindPersonData();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.page = val;
+      this.getFindPersonData();
     },
+    deleteItem() {
+      
+    },
+    searchByThingName() {
+
+    }
   },
 };
 </script>
@@ -71,6 +103,20 @@ export default {
   border-radius: 20px;
   box-sizing: border-box;
   width: 100%;
+  &_toolBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    h2 {
+      text-align: left;
+    }
+    .el-input {
+      width: 300px;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 .fp_pagination {
   margin-top: 20px;
