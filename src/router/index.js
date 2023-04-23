@@ -17,7 +17,7 @@ const routes = [
     path: '/home',
     name: 'home',
     component: () => import('../views/Home.vue'),
-    redirect: '/admin',
+    redirect: '/findgoods',
     children: [
       {
         path: '/findgoods',

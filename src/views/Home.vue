@@ -13,7 +13,7 @@
     <el-container>
       <el-aside width="220px">
         <el-menu
-          :default-active="currentPath"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           @select="handleSelect"
           text-color="#000000"
@@ -50,7 +50,7 @@ export default {
     return {
       role: '',
       nickName: '',
-      currentPath: '/admin'
+      currentPath: this.$route.path
     }
   },
   created() {
@@ -62,10 +62,6 @@ export default {
     } else { // 缓存中没有说明没登录，返回登录
       this.$router.push('/login')
     }
-  },
-  // 保证每次进入页面都是admin界面
-  mounted() {
-    this.$router.push(this.currentPath);
   },
   methods: {
     logOut() {
