@@ -19,7 +19,7 @@
       <el-table-column prop="region" label="拾取地点" align="center"> </el-table-column>
       <el-table-column prop="phone" label="联系方式" align="center"> </el-table-column>
       <el-table-column prop="desc" label="物品描述" align="center"> </el-table-column>
-      <el-table-column label="相关图片">
+      <el-table-column label="相关图片" align="center" min-width="104px">
         <template slot-scope="scope">
           <el-image 
             style="width: 100px; height: 100px"
@@ -29,6 +29,23 @@
         </template>
       </el-table-column>
       <el-table-column prop="time" label="发布时间"> </el-table-column>
+      <el-table-column label="删除">
+        <template slot-scope="scope">
+          <el-popconfirm
+            title="是否删掉这条数据？不可恢复"
+            @confirm="deleteItem(scope.row._id)"
+          >
+            <el-button 
+              type="danger" 
+              size="small" 
+              slot="reference" 
+              icon="el-icon-delete"
+            >
+              删除
+            </el-button>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       class="fp_pagination"
@@ -61,11 +78,13 @@ export default {
     this.getFindPersonData();
   },
   methods: {
+    // 获取数据主接口
     getFindPersonData: async function() {
       const params = {
         type: 0,
         page: this.page,
-        size: this.size
+        size: this.size,
+        keyWord: this.keyWord
       }
       const {
         data: {result, total},
@@ -86,11 +105,22 @@ export default {
       this.page = val;
       this.getFindPersonData();
     },
-    deleteItem() {
-      
+    // 删除功能
+    deleteItem: async function(_id) {
+      const params = {
+        _id
+      };
+      const { data } = await this.$http.post('/admin/deleteItem', params);
+      if (data === 'success') {
+        this.$message.success(`删除成功`);
+        this.getFindPersonData();
+      } else {
+        this.$message.error(`删除失败`);
+      }
     },
+    // 检索功能
     searchByThingName() {
-
+      this.getFindPersonData();
     }
   },
 };
