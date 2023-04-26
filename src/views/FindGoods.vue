@@ -1,7 +1,7 @@
 <template>
   <div class="fg_container">
     <div class="fg_container_toolBar">
-      <h2>寻物管理</h2>
+      <h2>失物寻物管理</h2>
       <el-input
         placeholder="请输入物品名称"
         prefix-icon="el-icon-search"
