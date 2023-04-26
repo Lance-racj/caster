@@ -21,11 +21,19 @@
         >
           <el-menu-item index="/findgoods">
             <i class="el-icon-location"></i>
-            <span slot="title">寻物管理</span>
+            <span slot="title">失物寻物管理</span>
           </el-menu-item>
           <el-menu-item index="/findperson">
             <i class="el-icon-menu"></i>
-            <span slot="title">寻主管理</span>
+            <span slot="title">失物寻主管理</span>
+          </el-menu-item>
+          <el-menu-item index="/sale">
+            <i class="el-icon-setting"></i>
+            <span slot="title">闲置出售管理</span>
+          </el-menu-item>
+          <el-menu-item index="/buy">
+            <i class="el-icon-setting"></i>
+            <span slot="title">闲置求购管理</span>
           </el-menu-item>
           <el-menu-item index="/user">
             <i class="el-icon-document"></i>
