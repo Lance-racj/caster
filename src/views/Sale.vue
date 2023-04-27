@@ -26,8 +26,8 @@
           </el-image>
         </template>
       </el-table-column>
-      <el-table-column prop="time" label="发布时间"> </el-table-column>
-      <el-table-column label="删除">
+      <el-table-column prop="time" label="发布时间" align="center"> </el-table-column>
+      <el-table-column label="删除" align="center">
         <template slot-scope="scope">
           <el-popconfirm
             title="是否删掉这条数据？不可恢复"
