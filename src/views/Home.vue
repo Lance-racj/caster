@@ -35,6 +35,10 @@
             <i class="el-icon-setting"></i>
             <span slot="title">闲置求购管理</span>
           </el-menu-item>
+          <el-menu-item index="/help">
+            <i class="el-icon-setting"></i>
+            <span slot="title">校园互助管理</span>
+          </el-menu-item>
           <el-menu-item index="/user">
             <i class="el-icon-document"></i>
             <span slot="title">用户管理</span>
