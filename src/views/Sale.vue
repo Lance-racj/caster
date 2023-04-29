@@ -17,6 +17,7 @@
       <el-table-column prop="name" label="物品名称" align="center"> </el-table-column>
       <el-table-column prop="phone" label="联系方式" align="center"> </el-table-column>
       <el-table-column prop="desc" label="物品描述" align="center"> </el-table-column>
+      <el-table-column prop="money" label="出售价格" align="center"> </el-table-column>
       <el-table-column label="相关图片" align="center" min-width="104px">
         <template slot-scope="scope">
           <el-image 
