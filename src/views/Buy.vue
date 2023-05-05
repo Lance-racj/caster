@@ -16,6 +16,7 @@
       <el-table-column prop="phone" label="联系方式" align="center"> </el-table-column>
       <el-table-column prop="desc" label="物品描述" align="center"> </el-table-column>
       <el-table-column prop="time" label="发布时间" align="center"> </el-table-column>
+      <el-table-column prop="status" label="当前状态" align="center"> </el-table-column>
       <el-table-column label="删除" align="center">
         <template slot-scope="scope">
           <el-popconfirm
@@ -75,7 +76,12 @@ export default {
       const {
         data: {result, total},
       } = await this.$http.post('/admin/getNeed', params);
-      this.tableData = result;
+      this.tableData = result.map((item) => {
+        return {
+          ...item,
+          status: item.status === 0? '进行中': '已结束' 
+        }
+      });
       this.total = total;
     },
     handleSizeChange(val) {

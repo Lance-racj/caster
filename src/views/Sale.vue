@@ -18,6 +18,7 @@
       <el-table-column prop="phone" label="联系方式" align="center"> </el-table-column>
       <el-table-column prop="desc" label="物品描述" align="center"> </el-table-column>
       <el-table-column prop="money" label="出售价格" align="center"> </el-table-column>
+      <el-table-column prop="status" label="当前状态" align="center"> </el-table-column>
       <el-table-column label="相关图片" align="center" min-width="104px">
         <template slot-scope="scope">
           <el-image 
@@ -87,7 +88,12 @@ export default {
       const {
         data: {result, total},
       } = await this.$http.post('/admin/getIdle', params);
-      this.tableData = result;
+      this.tableData = result.map((item) => {
+        return {
+          ...item,
+          status: item.status === 0? '进行中': '已结束' 
+        }
+      });
       this.total = total;
     },
     handleSizeChange(val) {

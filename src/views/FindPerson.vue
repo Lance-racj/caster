@@ -18,6 +18,7 @@
       <el-table-column prop="date" label="拾取时间" align="center"> </el-table-column>
       <el-table-column prop="region" label="拾取地点" align="center"> </el-table-column>
       <el-table-column prop="phone" label="联系方式" align="center"> </el-table-column>
+      <el-table-column prop="status" label="当前状态" align="center"> </el-table-column>
       <el-table-column prop="desc" label="物品描述" align="center"> </el-table-column>
       <el-table-column label="相关图片" align="center" min-width="104px">
         <template slot-scope="scope">
@@ -92,6 +93,7 @@ export default {
       this.tableData = result.map((item) => {
         return {
           ...item,
+          status: item.status === 0? '进行中': '已结束',
           time: dayjs(item.time).format("YYYY-MM-DD HH:mm:ss")
         }
       })
